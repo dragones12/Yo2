@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Perfil";
+}
+<center>
+    <h1>Mi Perfil 👤</h1>
+<div class="card" style="width: 300px; padding: 15px;">
+
+   @{
+    var avatar = User.Claims.FirstOrDefault(c => c.Type == "Avatar")?.Value;
+}
+
+@if (!string.IsNullOrEmpty(avatar))
+{
+    <img src="@Url.Content(avatar)"
+         width="120"
+         height="120"
+         class="rounded-circle"
+         style="object-fit:cover;" />
+}
+else
+{
+    <img src="~/img/usuario.png"
+         width="120"
+         height="120"
+         class="rounded-circle" />
+}
+<br>
+    <h4>@ViewBag.Nombre</h4>
+
+    <p><b>Email:</b> @ViewBag.Email</p>
+
+    <p>
+        <b>Rol:</b>
+        @ViewBag.Rol
+    </p>
+
+</div>
+</center>

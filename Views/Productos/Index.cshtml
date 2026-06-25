@@ -1,0 +1,232 @@
+@model IEnumerable<CBN_Online.Models.Producto>
+
+@{
+    ViewData["Title"] = "Productos - Blackletter";
+}
+
+<!-- ============================================ -->
+<!-- PAGE HEADER -->
+<!-- ============================================ -->
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h2 class="page-title">
+            <i class="fas fa-box"></i> Catálogo de Productos
+        </h2>
+        <p class="page-subtitle">Explora nuestra selección de cervezas artesanales</p>
+    </div>
+    <div>
+        <a asp-action="Create" class="btn btn-blackletter-primary">
+            <i class="fas fa-plus"></i> Nuevo Producto
+        </a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- MENSAJES DE ALERTA -->
+<!-- ============================================ -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- ============================================ -->
+<!-- PRODUCTOS GRID - TARJETAS -->
+<!-- ============================================ -->
+@if (Model != null && Model.Any())
+{
+    <div class="products-grid">
+        @foreach (var item in Model)
+        {
+            <article class="product-card">
+                <!-- Imagen -->
+                <div class="product-image">
+                    @if (!string.IsNullOrEmpty(item.url_imagen))
+                    {
+                        <img src="@item.url_imagen" alt="@item.nombre_producto" 
+                             onerror="this.onerror=null; this.src='/img/imagen.png';" />
+                    }
+                    else
+                    {
+                        <span>🍺</span>
+                    }
+                    
+                    <!-- Badge de estado -->
+                    @if (item.es_activo)
+                    {
+                        <span class="product-badge" style="background: var(--success);">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="product-badge" style="background: var(--danger);">Inactivo</span>
+                    }
+                </div>
+                
+                <!-- Cuerpo -->
+                <div class="product-body">
+                    <h3 class="product-name">@item.nombre_producto</h3>
+                    <div class="product-brand">
+                        <i class="fas fa-tag"></i> @item.Marca?.nombre_marca
+                    </div>
+                    
+                    <p class="product-description">
+                        @item.descripcion
+                    </p>
+                    
+                    <!-- Especificaciones -->
+                    <div class="product-specs">
+                        <span class="spec-item">
+                            <i class="fas fa-percent"></i> @item.graduacion_alcohol% ABV
+                        </span>
+                        <span class="spec-item">
+                            <i class="fas fa-box"></i> @item.estilo
+                        </span>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="product-footer">
+                        <div class="product-price">@item.precio.ToString("C")</div>
+                        <div class="product-stock @(item.stock > 10 ? "stock-available" : item.stock > 0 ? "stock-low" : "stock-unavailable")">
+                            @if (item.stock > 10)
+                            {
+                                <i class="fas fa-check-circle"></i>
+                                <span>En Stock (@item.stock)</span>
+                            }
+                            else if (item.stock > 0)
+                            {
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Pocas Unidades (@item.stock)</span>
+                            }
+                            else
+                            {
+                                <i class="fas fa-times-circle"></i>
+                                <span>Agotado</span>
+                            }
+                        </div>
+                    </div>
+                    
+                    <!-- Acciones -->
+                    <div class="product-actions mt-3" style="display: flex; gap: 0.5rem; border-top: 1px solid var(--light); padding-top: 0.75rem;">
+                        <a asp-action="Edit" asp-route-id="@item.id_producto" class="btn btn-blackletter-info btn-sm" style="flex: 1; padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.id_producto" class="btn btn-blackletter-success btn-sm" style="flex: 1; padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                            <i class="fas fa-eye"></i> Ver
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.id_producto" class="btn btn-blackletter-danger btn-sm" style="flex: 1; padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+}
+else
+{
+    <!-- Mensaje cuando no hay productos -->
+    <div class="text-center py-5">
+        <div style="font-size: 4rem; color: var(--secondary);">
+            <i class="fas fa-beer"></i>
+        </div>
+        <h3 class="mt-3" style="color: var(--primary);">No hay productos disponibles</h3>
+        <p class="text-muted">Comienza agregando tu primer producto al catálogo.</p>
+        <a asp-action="Create" class="btn btn-blackletter-primary mt-2">
+            <i class="fas fa-plus"></i> Crear Producto
+        </a>
+    </div>
+}
+
+<!-- ============================================ -->
+<!-- ESTILOS ADICIONALES -->
+<!-- ============================================ -->
+<style>
+    .product-badge {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: white;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-actions .btn-sm {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: var(--transition);
+    }
+
+    .product-actions .btn-sm:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-blackletter-info {
+        background: var(--info);
+        color: white;
+    }
+
+    .btn-blackletter-info:hover {
+        background: #2980b9;
+        color: white;
+    }
+
+    .btn-blackletter-success {
+        background: var(--success);
+        color: white;
+    }
+
+    .btn-blackletter-success:hover {
+        background: #229954;
+        color: white;
+    }
+
+    .btn-blackletter-danger {
+        background: var(--danger);
+        color: white;
+    }
+
+    .btn-blackletter-danger:hover {
+        background: #c0392b;
+        color: white;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 1rem;
+        }
+
+        .page-header .btn {
+            width: 100%;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .product-actions {
+            flex-direction: column;
+        }
+
+        .product-actions .btn-sm {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>

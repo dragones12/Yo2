@@ -1,0 +1,151 @@
+﻿@{
+    ViewData["Title"] = "Blackletter - Cervecería Artesanal";
+}
+
+<div class="text-center">
+    <div class="hero-simple">
+        <div class="hero-overlay"></div>
+        <div class="container py-5 position-relative" style="z-index: 2;">
+            <!-- Logo -->
+            <div class="mb-4">
+                <img src="~/img/logo-blackletter.png" alt="Blackletter Logo" 
+                     class="img-fluid" style="height: 90px; width: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));" 
+                     onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                <i class="fas fa-beer" style="font-size: 5rem; color: #d4a574; display: none;"></i>
+            </div>
+            
+            <!-- Título -->
+            <h1 class="display-1 fw-bold" style="color: #1a1a1a; font-family: 'Georgia', serif; text-shadow: 0 2px 8px rgba(255,255,255,0.3);">
+                Blackletter
+            </h1>
+            
+            <!-- Subtítulo -->
+            <h2 class="display-6" style="font-weight: 300; color: #2c3e50;">
+                Cervecería Artesanal
+            </h2>
+            
+            <!-- Descripción -->
+            <p class="lead mt-3" style="max-width: 500px; margin: 0 auto; color: #2c3e50; background: rgba(255,255,255,0.7); padding: 0.5rem 1.5rem; border-radius: 50px; backdrop-filter: blur(5px);">
+                <i class="fas fa-beer me-2" style="color: #d4a574;"></i>
+                Elaboramos cervezas con pasión y tradición.
+            </p>
+            
+            <!-- Botones -->
+            <div class="mt-4">
+                <a class="btn btn-primary me-2 btn-lg" asp-controller="Productos" asp-action="Index">
+                    <i class="fas fa-box"></i> Ver Catálogo
+                </a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a class="btn btn-outline-primary btn-lg" asp-controller="Pedidos" asp-action="Index">
+                        <i class="fas fa-shopping-cart"></i> Mis Pedidos
+                    </a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-primary btn-lg" asp-controller="Cuenta" asp-action="Login">
+                        <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-simple {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius);
+        margin: 1rem 0;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    /* Imagen de fondo */
+    .hero-simple::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('~/img/cerveza-fondo.jpg');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.15;
+        z-index: 1;
+    }
+
+    /* Overlay sutil */
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(248,249,250,0.8) 100%);
+        z-index: 1;
+    }
+
+    .hero-simple .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-simple h1 {
+        text-shadow: 0 2px 8px rgba(255,255,255,0.5);
+        letter-spacing: 2px;
+    }
+
+    @@media (max-width: 768px) {
+        .hero-simple {
+            min-height: 60vh;
+        }
+
+        .hero-simple h1 {
+            font-size: 3rem !important;
+        }
+        
+        .hero-simple h2 {
+            font-size: 1.5rem !important;
+        }
+
+        .hero-simple .lead {
+            font-size: 1rem !important;
+        }
+
+        .hero-simple .btn-lg {
+            font-size: 0.95rem;
+            padding: 0.5rem 1.2rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .hero-simple h1 {
+            font-size: 2.2rem !important;
+        }
+        
+        .hero-simple h2 {
+            font-size: 1.2rem !important;
+        }
+        
+        .hero-simple .btn {
+            display: block;
+            width: 100%;
+            margin: 0.5rem 0 !important;
+        }
+        
+        .hero-simple .btn.me-2 {
+            margin-right: 0 !important;
+        }
+
+        .hero-simple .lead {
+            background: rgba(255,255,255,0.8) !important;
+            font-size: 0.95rem !important;
+        }
+    }
+</style>

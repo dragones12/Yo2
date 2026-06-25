@@ -1,0 +1,103 @@
+@model CBN_Online.Models.Empresa
+
+@{
+    ViewData["Title"] = "Editar Empresa";
+}
+
+<h1>Editar Empresa</h1>
+
+<h4>Empresa</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id_empresa" />
+            <input type="hidden" asp-for="created_at" />
+            
+            <div class="form-group">
+                <label asp-for="nombre_empresa" class="control-label"></label>
+                <input asp-for="nombre_empresa" class="form-control" />
+                <span asp-validation-for="nombre_empresa" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="descripcion" class="control-label"></label>
+                <textarea asp-for="descripcion" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="descripcion" class="text-danger"></span>
+            </div>
+            
+            <!-- Mostrar logo actual -->
+            <div class="form-group">
+                <label class="control-label">Logo actual</label>
+                <div style="margin: 10px 0;">
+                    @if (!string.IsNullOrEmpty(Model.url_logo))
+                    {
+                        <img src="@Model.url_logo" alt="@Model.nombre_empresa" 
+                             style="max-width: 150px; max-height: 150px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" 
+                             onerror="this.onerror=null; this.src='/img/imagen.png';" />
+                        <br />
+                        <small class="text-muted">@Model.url_logo</small>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No hay logo disponible</p>
+                    }
+                </div>
+            </div>
+            
+            <!-- Campo para subir nuevo logo -->
+            <div class="form-group">
+                <label for="LogoFile" class="control-label">Cambiar logo</label>
+                <input type="file" name="LogoFile" id="LogoFile" class="form-control" accept="image/*" />
+                <small class="text-muted">Dejar vacío para mantener el logo actual. Formatos: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
+                <span asp-validation-for="url_logo" class="text-danger"></span>
+            </div>
+            
+            <!-- Vista previa del nuevo logo -->
+            <div class="form-group">
+                <label class="control-label">Vista previa</label>
+                <div id="previewContainer" style="display:none; margin-top: 10px;">
+                    <img id="imagePreview" src="#" alt="Vista previa" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" />
+                </div>
+            </div>
+            
+            <div class="form-group mt-3">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        // Vista previa de imagen en tiempo real
+        document.getElementById('LogoFile').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('previewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                previewContainer.style.display = 'none';
+                imagePreview.src = '#';
+            }
+        });
+    </script>
+}

@@ -1,0 +1,177 @@
+@model CBN_Online.Models.Pedido
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>¿Estás seguro de que quieres eliminar este pedido?</h3>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> @TempData["ErrorMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div>
+    <h4>Pedido</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.id_pedido)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.id_pedido)
+        </dd>
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Usuario)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Usuario.email)
+        </dd>
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.fecha_pedido)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.fecha_pedido)
+        </dd>
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.total)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.total)
+        </dd>
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.estado)
+        </dt>
+        <dd class="col-sm-9">
+            @if (Model.estado == "Pendiente")
+            {
+                <span class="badge badge-warning">@Html.DisplayFor(model => model.estado)</span>
+            }
+            else if (Model.estado == "Pagado")
+            {
+                <span class="badge badge-info">@Html.DisplayFor(model => model.estado)</span>
+            }
+            else if (Model.estado == "Enviado")
+            {
+                <span class="badge badge-primary">@Html.DisplayFor(model => model.estado)</span>
+            }
+            else if (Model.estado == "Entregado")
+            {
+                <span class="badge badge-success">@Html.DisplayFor(model => model.estado)</span>
+            }
+            else if (Model.estado == "Cancelado")
+            {
+                <span class="badge badge-danger">@Html.DisplayFor(model => model.estado)</span>
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.estado)
+            }
+        </dd>
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.metodo_pago)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.metodo_pago)
+        </dd>
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.direccion_envio)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.direccion_envio)
+        </dd>
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.nota)
+        </dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.nota))
+            {
+                @Html.DisplayFor(model => model.nota)
+            }
+            else
+            {
+                <span class="text-muted">Sin nota</span>
+            }
+        </dd>
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.created_at)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.created_at)
+        </dd>
+    </dl>
+    
+    <!-- Mostrar detalles del pedido si existen -->
+    @if (Model.Detalle_Pedidos != null && Model.Detalle_Pedidos.Any())
+    {
+        <h5>Detalles del Pedido</h5>
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detalle in Model.Detalle_Pedidos)
+                {
+                    <tr>
+                        <td>@detalle.Producto?.nombre_producto</td>
+                        <td>@detalle.cantidad</td>
+                        <td>@detalle.precio_unitario.ToString("C")</td>
+                        <td>@detalle.subtotal.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                    <td><strong>@Model.total.ToString("C")</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+    
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="id_pedido" />
+        
+        @if (Model.Detalle_Pedidos != null && Model.Detalle_Pedidos.Any())
+        {
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Advertencia:</strong> Este pedido tiene @Model.Detalle_Pedidos.Count() detalle(s).
+                No se puede eliminar si tiene detalles asociados.
+            </div>
+            <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+        }
+        else
+        {
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        }
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

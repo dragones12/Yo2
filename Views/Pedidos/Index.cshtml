@@ -1,0 +1,77 @@
+@model IEnumerable<CBN_Online.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.fecha_pedido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.metodo_pago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.direccion_envio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nota)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.created_at)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha_pedido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.estado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.metodo_pago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.direccion_envio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nota)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_at)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Usuario.email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id_pedido">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id_pedido">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id_pedido">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

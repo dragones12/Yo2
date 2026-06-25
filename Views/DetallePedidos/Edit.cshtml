@@ -1,0 +1,88 @@
+@model CBN_Online.Models.Detalle_Pedido
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Detalle Pedido</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <input type="hidden" asp-for="id_detalle" />
+            <input type="hidden" asp-for="subtotal" />
+            <input type="hidden" asp-for="created_at" />
+            
+            <div class="form-group">
+                <label asp-for="id_pedido" class="control-label"></label>
+                <select asp-for="id_pedido" class="form-control" asp-items="ViewBag.id_pedido">
+                    <option value="">Seleccione un pedido</option>
+                </select>
+                <span asp-validation-for="id_pedido" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="id_producto" class="control-label"></label>
+                <select asp-for="id_producto" class="form-control" asp-items="ViewBag.id_producto">
+                    <option value="">Seleccione un producto</option>
+                </select>
+                <span asp-validation-for="id_producto" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="cantidad" class="control-label"></label>
+                <input asp-for="cantidad" class="form-control" type="number" min="1" step="1" />
+                <span asp-validation-for="cantidad" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="precio_unitario" class="control-label"></label>
+                <input asp-for="precio_unitario" class="form-control" type="number" min="0" step="0.01" />
+                <span asp-validation-for="precio_unitario" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label">Subtotal</label>
+                <input asp-for="subtotal" class="form-control" readonly disabled style="background-color: #f0f0f0;" />
+                <small class="text-muted">Se calcula automáticamente: cantidad × precio unitario</small>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        // Script para calcular el subtotal automáticamente en el cliente
+        $(document).ready(function() {
+            function calcularSubtotal() {
+                var cantidad = parseFloat($('#cantidad').val()) || 0;
+                var precio = parseFloat($('#precio_unitario').val()) || 0;
+                var subtotal = cantidad * precio;
+                $('#subtotal').val(subtotal.toFixed(2));
+            }
+            
+            $('#cantidad, #precio_unitario').on('input', function() {
+                calcularSubtotal();
+            });
+        });
+    </script>
+}

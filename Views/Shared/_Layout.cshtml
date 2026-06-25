@@ -1,0 +1,248 @@
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Blackletter Cervecería</title>
+    
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Estilos Blackletter -->
+    <link rel="stylesheet" href="~/css/blackletter.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/blackletter-override.css" asp-append-version="true" />
+    
+    <!-- Estilos del proyecto -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/loguin_A.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+    <!-- ============================================ -->
+    <!-- NAVBAR -->
+    <!-- ============================================ -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-beer"></i> Blackletter
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+                        aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <!-- Menú principal -->
+                    <ul class="navbar-nav me-auto">
+                        <!-- Inicio -->
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" 
+                               asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home"></i> Inicio
+                            </a>
+                        </li>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <!-- Admin - Menú completo -->
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Empresa" ? "active" : "")" 
+                                       asp-controller="Empresa" asp-action="Index">
+                                        <i class="fas fa-building"></i> Empresas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Marcas" ? "active" : "")" 
+                                       asp-controller="Marcas" asp-action="Index">
+                                        <i class="fas fa-tags"></i> Marcas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Productos" ? "active" : "")" 
+                                       asp-controller="Productos" asp-action="Index">
+                                        <i class="fas fa-box"></i> Productos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Pedidos" ? "active" : "")" 
+                                       asp-controller="Pedidos" asp-action="Index">
+                                        <i class="fas fa-shopping-cart"></i> Pedidos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "DetallePedidos" ? "active" : "")" 
+                                       asp-controller="DetallePedidos" asp-action="Index">
+                                        <i class="fas fa-list-ul"></i> Detalle Pedidos
+                                    </a>
+                                </li>
+                                @* <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-cog"></i> Administración
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                   
+                                        <li><a class="dropdown-item" asp-controller="Empresa" asp-action="Index"><i class="fas fa-building"></i> Empresas</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Marcas" asp-action="Index"><i class="fas fa-tags"></i> Marcas</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Productos" asp-action="Index"><i class="fas fa-box"></i> Productos</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Pedidos" asp-action="Index"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                                        <li><a class="dropdown-item" asp-controller="DetallePedidos" asp-action="Index"><i class="fas fa-list-ul"></i> Detalle Pedidos</a></li>
+                                    </ul>
+                                </li> *@
+                            }
+
+                            @if (User.IsInRole("Usuario") || User.IsInRole("Cliente"))
+                            {
+                                <!-- Usuario/Cliente - Menú básico -->
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Productos" ? "active" : "")" 
+                                       asp-controller="Productos" asp-action="Index">
+                                        <i class="fas fa-box"></i> Productos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Pedidos" ? "active" : "")" 
+                                       asp-controller="Pedidos" asp-action="Index">
+                                        <i class="fas fa-shopping-cart"></i> Mis Pedidos
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <!-- Invitado -->
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Productos" ? "active" : "")" 
+                                   asp-controller="Productos" asp-action="Index">
+                                    <i class="fas fa-box"></i> Productos
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- Zona derecha - Usuario -->
+                    <ul class="navbar-nav">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            var nombreUsuario = User.Identity.Name;
+                            var avatar = User.Claims.FirstOrDefault(c => c.Type == "Avatar")?.Value;
+                            var esAdmin = User.IsInRole("Admin");
+                            var esCliente = User.IsInRole("Cliente");
+                            
+                            var (nombreRol, claseRol) = esAdmin ? ("Administrador", "role-badge-admin") :
+                                                          esCliente ? ("Cliente", "role-badge-cliente") :
+                                                          ("Usuario", "role-badge-usuario");
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                    @if (!string.IsNullOrEmpty(avatar))
+                                    {
+                                        <img src="@Url.Content(avatar)" class="user-avatar" alt="Avatar" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@Url.Content("~/img/usuario.png")" class="user-avatar" alt="Usuario" />
+                                    }
+                                    <span class="user-name">@nombreUsuario</span>
+                                    <span class="role-badge @claseRol">@nombreRol</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Cuenta" asp-action="Perfil">
+                                            <i class="fas fa-user"></i> Mi Perfil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Cuenta" asp-action="EditarPerfil">
+                                            <i class="fas fa-edit"></i> Editar Perfil
+                                        </a>
+                                    </li>
+                                    @if (esAdmin)
+                                    {
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Admin" asp-action="Index">
+                                                <i class="fas fa-cog"></i> Panel Admin
+                                            </a>
+                                        </li>
+                                    }
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" asp-controller="Cuenta" asp-action="Logout">
+                                            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-nav-login" asp-controller="Cuenta" asp-action="Login">
+                                    <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ============================================ -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ============================================ -->
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <footer class="footer-blackletter">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center text-md-start">
+                    <h5 class="footer-title">
+                        <i class="fas fa-beer"></i> Blackletter
+                    </h5>
+                    <p class="mb-0">La mejor selección de cervezas artesanales</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <p class="mb-0">
+                        &copy; @DateTime.Now.Year - Blackletter Cervecería Online
+                    </p>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy">
+                        <i class="fas fa-lock"></i> Política de Privacidad
+                    </a>
+                </div>
+            </div>
+            <hr class="footer-divider" />
+            <div class="text-center">
+                <small class="text-muted">
+                    <i class="fas fa-code"></i> Desarrollado con <i class="fas fa-heart" style="color: var(--danger);"></i> en ASP.NET Core 8
+                </small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================================ -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

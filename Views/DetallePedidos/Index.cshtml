@@ -1,0 +1,65 @@
+@model IEnumerable<CBN_Online.Models.Detalle_Pedido>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.cantidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.precio_unitario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.subtotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.created_at)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pedido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.cantidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.precio_unitario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.subtotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_at)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pedido.direccion_envio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Producto.nombre_producto)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id_detalle">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id_detalle">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id_detalle">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

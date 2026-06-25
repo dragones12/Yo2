@@ -1,0 +1,138 @@
+/* ============================================
+   BLACKLETTER - Overrides para Bootstrap
+   ============================================ */
+
+/* Override de colores Bootstrap */
+.btn-primary {
+    background-color: var(--secondary) !important;
+    border-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-hover) !important;
+    border-color: var(--secondary-hover) !important;
+    color: var(--primary) !important;
+}
+
+.btn-outline-primary {
+    color: var(--secondary) !important;
+    border-color: var(--secondary) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--secondary) !important;
+    border-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+/* Badges de Bootstrap */
+.badge-primary {
+    background-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+.badge-success {
+    background-color: var(--success) !important;
+}
+
+.badge-danger {
+    background-color: var(--danger) !important;
+}
+
+.badge-warning {
+    background-color: var(--warning) !important;
+}
+
+.badge-info {
+    background-color: var(--info) !important;
+}
+
+/* Alerts de Bootstrap */
+.alert-primary {
+    background-color: var(--accent) !important;
+    border-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+/* Tablas de Bootstrap */
+.table-primary {
+    background-color: var(--accent) !important;
+}
+
+.table-primary th {
+    background-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+/* Paginación */
+.page-item.active .page-link {
+    background-color: var(--secondary) !important;
+    border-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+.page-link {
+    color: var(--secondary) !important;
+}
+
+.page-link:hover {
+    color: var(--secondary-hover) !important;
+}
+
+/* Dropdown */
+.dropdown-item:active {
+    background-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+/* Modal */
+.modal-header {
+    border-bottom-color: var(--secondary) !important;
+}
+
+.modal-footer {
+    border-top-color: var(--secondary) !important;
+}
+
+/* Formularios */
+.form-control:focus {
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(212, 165, 116, 0.25) !important;
+}
+
+.form-select:focus {
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(212, 165, 116, 0.25) !important;
+}
+
+/* Progress Bar */
+.progress-bar {
+    background-color: var(--secondary) !important;
+}
+
+/* Toasts */
+.toast-header {
+    background-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+/* Cards */
+.card {
+    border-radius: var(--radius) !important;
+    overflow: hidden !important;
+}
+
+.card-header {
+    background-color: var(--primary) !important;
+    color: white !important;
+    border-bottom: 2px solid var(--secondary) !important;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+    .table-responsive {
+        border-radius: var(--radius);
+        overflow: hidden;
+    }
+}

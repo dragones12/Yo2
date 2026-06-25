@@ -1,0 +1,85 @@
+@model CBN_Online.Models.Marca
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Marca</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.nombre_marca)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.nombre_marca)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.tipo_marca)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.tipo_marca == "Cerveza")
+            {
+                <span class="badge bg-warning">@Model.tipo_marca</span>
+            }
+            else
+            {
+                <span class="badge bg-info">@Model.tipo_marca</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.descripcion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.url_imagen)
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.url_imagen))
+            {
+                <img src="@Model.url_imagen" alt="@Model.nombre_marca" 
+                     style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" 
+                     onerror="this.onerror=null; this.src='/img/imagen.png';" />
+                <br />
+                <small class="text-muted">@Model.url_imagen</small>
+            }
+            else
+            {
+                <span class="text-muted">No hay imagen disponible</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.es_activo)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.es_activo)
+            {
+                <span class="badge bg-success">Activo</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Inactivo</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.created_at)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.created_at.ToString("dd/MM/yyyy HH:mm")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Empresa)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Empresa.nombre_empresa)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.id_marca">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

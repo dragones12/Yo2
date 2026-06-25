@@ -1,0 +1,148 @@
+@model CBN_Online.Models.Producto
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Producto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="id_producto" />
+
+            <div class="form-group">
+                <label asp-for="id_marca" class="control-label"></label>
+                <select asp-for="id_marca" class="form-control" asp-items="ViewBag.id_marca"></select>
+                <span asp-validation-for="id_marca" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="nombre_producto" class="control-label"></label>
+                <input asp-for="nombre_producto" class="form-control" />
+                <span asp-validation-for="nombre_producto" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="estilo" class="control-label"></label>
+                <input asp-for="estilo" class="form-control" />
+                <span asp-validation-for="estilo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="graduacion_alcohol" class="control-label"></label>
+                <input type="number"
+                       step="0.1"
+                       asp-for="graduacion_alcohol"
+                       class="form-control" />
+                <span asp-validation-for="graduacion_alcohol" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="descripcion" class="control-label"></label>
+                <textarea asp-for="descripcion" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Imagen actual</label>
+                <div style="margin: 10px 0;">
+                    @if (!string.IsNullOrEmpty(Model.url_imagen))
+                    {
+                        <img src="@Model.url_imagen"
+                             alt="Imagen actual"
+                             style="max-width: 150px; max-height: 150px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" />
+                    }
+                    else
+                    {
+                        <p class="text-muted">No hay imagen disponible</p>
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ImagenFile" class="control-label">Cambiar imagen</label>
+                <input type="file"
+                       name="ImagenFile"
+                       id="ImagenFile"
+                       class="form-control"
+                       accept="image/*" />
+                <small class="text-muted">
+                    Dejar vacío para mantener la imagen actual. Formatos: JPG, PNG, GIF. Tamaño máximo: 5MB
+                </small>
+                <span asp-validation-for="url_imagen" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Vista previa</label>
+                <div id="previewContainer" style="display:none; margin-top: 10px;">
+                    <img id="imagePreview"
+                         src="#"
+                         alt="Vista previa"
+                         style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="precio" class="control-label"></label>
+                <input type="number"
+                       step="0.01"
+                       asp-for="precio"
+                       class="form-control" />
+                <span asp-validation-for="precio" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="stock" class="control-label"></label>
+                <input asp-for="stock" class="form-control" />
+                <span asp-validation-for="stock" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="es_activo" />
+                    @Html.DisplayNameFor(model => model.es_activo)
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('ImagenFile').addEventListener('change', function () {
+            const previewContainer = document.getElementById('previewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                previewContainer.style.display = 'none';
+                imagePreview.src = '#';
+            }
+        });
+    </script>
+}

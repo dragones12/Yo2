@@ -1,0 +1,102 @@
+@model CBN_Online.Models.Producto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Producto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="id_marca" class="control-label"></label>
+                <select asp-for="id_marca" class="form-control" asp-items="ViewBag.id_marca"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="nombre_producto" class="control-label"></label>
+                <input asp-for="nombre_producto" class="form-control" />
+                <span asp-validation-for="nombre_producto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="estilo" class="control-label"></label>
+                <input asp-for="estilo" class="form-control" />
+                <span asp-validation-for="estilo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="graduacion_alcohol" class="control-label"></label>
+                <input asp-for="graduacion_alcohol" class="form-control" />
+                <span asp-validation-for="graduacion_alcohol" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="descripcion" class="control-label"></label>
+                <textarea asp-for="descripcion" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="ImagenFile" class="control-label">Imagen del producto</label>
+                <input type="file" name="ImagenFile" id="ImagenFile" class="form-control" accept="image/*" />
+                <small class="text-muted">Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
+                <span asp-validation-for="url_imagen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Vista previa</label>
+                <div id="previewContainer" style="display:none; margin-top: 10px;">
+                    <img id="imagePreview" src="#" alt="Vista previa" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="precio" class="control-label"></label>
+                <input asp-for="precio" class="form-control" />
+                <span asp-validation-for="precio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="stock" class="control-label"></label>
+                <input asp-for="stock" class="form-control" />
+                <span asp-validation-for="stock" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="es_activo" /> @Html.DisplayNameFor(model => model.es_activo)
+                </label>
+            </div>
+           
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Vista previa de imagen en tiempo real
+        document.getElementById('ImagenFile').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('previewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                previewContainer.style.display = 'none';
+                imagePreview.src = '#';
+            }
+        });
+    </script>
+}

@@ -1,0 +1,122 @@
+@{
+    ViewData["Title"] = "Editar Perfil";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center mb-0">
+                        <i class="fas fa-user-edit"></i> Editar Perfil
+                    </h2>
+                </div>
+                <div class="card-body">
+                    
+                    @if (!string.IsNullOrEmpty(ViewBag.Error))
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle"></i> @ViewBag.Error
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(TempData["Success"] as string))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle"></i> @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <form asp-action="EditarPerfil" method="post" enctype="multipart/form-data">
+                        
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-user"></i> Nombre <span class="text-danger">*</span>
+                            </label>
+                            <input name="nombre" value="@ViewBag.Nombre" class="form-control" required 
+                                   placeholder="Ingresa tu nombre completo" />
+                        </div>
+
+                        <!-- Teléfono -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-phone"></i> Teléfono
+                            </label>
+                            <input name="telefono" value="@ViewBag.Telefono" class="form-control" 
+                                   placeholder="Ej: 1234-5678" />
+                        </div>
+
+                        <!-- Dirección -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-map-marker-alt"></i> Dirección
+                            </label>
+                            <input name="direccion" value="@ViewBag.Direccion" class="form-control" 
+                                   placeholder="Ingresa tu dirección" />
+                        </div>
+
+                        <!-- Avatar -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-image"></i> Avatar actual
+                            </label>
+                            <div class="text-center mb-3">
+                                <img src="@ViewBag.Avatar" alt="Avatar" 
+                                     class="img-fluid rounded-circle border border-3 border-primary shadow-sm" 
+                                     style="width: 150px; height: 150px; object-fit: cover;" />
+                            </div>
+                            
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-upload"></i> Cambiar avatar
+                            </label>
+                            <input type="file" name="avatarFile" class="form-control" accept="image/*" />
+                            <div class="form-text text-muted">
+                                <i class="fas fa-info-circle"></i> Formatos permitidos: JPG, PNG, GIF, BMP. 
+                                Tamaño máximo: 5MB
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Cambiar contraseña -->
+                        <h5 class="mb-3 text-secondary">
+                            <i class="fas fa-lock"></i> Cambiar contraseña
+                        </h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nueva contraseña <span class="text-muted">(opcional)</span></label>
+                            <input type="password" name="password" class="form-control" 
+                                   placeholder="Ingresa nueva contraseña" />
+                            <div class="form-text text-muted">
+                                <i class="fas fa-info-circle"></i> Dejar en blanco para mantener la contraseña actual
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Confirmar contraseña</label>
+                            <input type="password" name="confirmarPassword" class="form-control" 
+                                   placeholder="Confirma tu nueva contraseña" />
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Perfil" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar cambios
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Agregar Font Awesome para los íconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />

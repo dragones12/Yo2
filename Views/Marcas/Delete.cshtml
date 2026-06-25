@@ -1,0 +1,128 @@
+@model CBN_Online.Models.Marca
+
+@{
+    ViewData["Title"] = "Eliminar Marca";
+}
+
+<h1>Eliminar Marca</h1>
+
+<div class="alert alert-warning">
+    <h4>¿Estás seguro de que quieres eliminar esta marca?</h4>
+    <p>Esta acción no se puede deshacer.</p>
+</div>
+
+@if (ViewBag.TieneProductos != null && ViewBag.TieneProductos == true)
+{
+    <div class="alert alert-danger">
+        <strong>⚠️ No se puede eliminar esta marca porque tiene productos asociados.</strong>
+        <p>Primero debes eliminar o reasignar los productos de esta marca.</p>
+    </div>
+}
+
+<div>
+    <h4>Marca</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.nombre_marca)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.nombre_marca)
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.tipo_marca)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.tipo_marca == "Cerveza")
+            {
+                <span class="badge bg-warning">@Model.tipo_marca</span>
+            }
+            else
+            {
+                <span class="badge bg-info">@Model.tipo_marca</span>
+            }
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.descripcion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.url_imagen)
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.url_imagen))
+            {
+                <img src="@Model.url_imagen" alt="@Model.nombre_marca" 
+                     style="max-width: 150px; max-height: 150px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" 
+                     onerror="this.onerror=null; this.src='/img/imagen.png';" />
+                <br />
+                <small class="text-muted">@Model.url_imagen</small>
+            }
+            else
+            {
+                <span class="text-muted">Sin imagen</span>
+            }
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.es_activo)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.es_activo)
+            {
+                <span class="badge bg-success">Activo</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Inactivo</span>
+            }
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.created_at)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.created_at.ToString("dd/MM/yyyy HH:mm")
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Empresa)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Empresa != null)
+            {
+                @Html.DisplayFor(model => model.Empresa.nombre_empresa)
+            }
+            else
+            {
+                <span class="text-muted">Sin empresa</span>
+            }
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="id_marca" />
+        
+        @if (ViewBag.TieneProductos != null && ViewBag.TieneProductos == true)
+        {
+            <button type="submit" class="btn btn-danger" disabled>
+                <i class="fas fa-ban"></i> No se puede eliminar
+            </button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
+        }
+        
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver a la lista
+        </a>
+    </form>
+</div>

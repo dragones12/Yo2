@@ -1,0 +1,120 @@
+@model CBN_Online.Models.Empresa
+
+@{
+    ViewData["Title"] = "Eliminar Empresa";
+}
+
+<h1>Eliminar Empresa</h1>
+
+<div class="alert alert-warning">
+    <h4>¿Estás seguro de que quieres eliminar esta empresa?</h4>
+    <p>Esta acción no se puede deshacer.</p>
+</div>
+
+@if (ViewBag.TieneMarcas != null && ViewBag.TieneMarcas == true)
+{
+    <div class="alert alert-danger">
+        <strong>⚠️ No se puede eliminar esta empresa porque tiene marcas asociadas.</strong>
+        <p>Primero debes eliminar las marcas de esta empresa.</p>
+    </div>
+}
+
+<div>
+    <h4>Empresa</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.nombre_empresa)
+        </dt>
+        <dd class="col-sm-10">
+            <strong>@Html.DisplayFor(model => model.nombre_empresa)</strong>
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.descripcion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.url_logo)
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.url_logo))
+            {
+                <img src="@Model.url_logo" alt="@Model.nombre_empresa" 
+                     style="max-width: 150px; max-height: 150px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" 
+                     onerror="this.onerror=null; this.src='/img/imagen.png';" />
+                <br />
+                <small class="text-muted">@Model.url_logo</small>
+            }
+            else
+            {
+                <span class="text-muted">Sin logo</span>
+            }
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.created_at)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.created_at.ToString("dd/MM/yyyy HH:mm")
+        </dd>
+        
+        <dt class="col-sm-2">
+            Marcas Asociadas
+        </dt>
+        <dd class="col-sm-10">
+            @if (ViewBag.TieneMarcas != null && ViewBag.TieneMarcas == true)
+            {
+                <div class="text-danger">
+                    <i class="fas fa-exclamation-triangle"></i> 
+                    Esta empresa tiene marcas asociadas. No se puede eliminar.
+                </div>
+            }
+            else
+            {
+                <span class="text-success">
+                    <i class="fas fa-check-circle"></i> 
+                    No tiene marcas asociadas. Se puede eliminar.
+                </span>
+            }
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="id_empresa" />
+        
+        @if (ViewBag.TieneMarcas != null && ViewBag.TieneMarcas == true)
+        {
+            <button type="submit" class="btn btn-danger" disabled>
+                <i class="fas fa-ban"></i> No se puede eliminar
+            </button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta empresa?');">
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
+        }
+        
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver a la lista
+        </a>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        // Confirmación adicional con SweetAlert (opcional)
+        // Si quieres usar SweetAlert, descomenta este código
+        /*
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!confirm('¿Estás seguro de que quieres eliminar esta empresa?')) {
+                e.preventDefault();
+            }
+        });
+        */
+    </script>
+}

@@ -1,0 +1,127 @@
+@model CBN_Online.Models.Marca
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Marca</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <input type="hidden" asp-for="id_marca" />
+            <input type="hidden" asp-for="created_at" />
+            
+            <div class="form-group">
+                <label asp-for="id_empresa" class="control-label"></label>
+                <select asp-for="id_empresa" class="form-control" asp-items="ViewBag.id_empresa">
+                    <option value="">Seleccione una empresa</option>
+                </select>
+                <span asp-validation-for="id_empresa" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="nombre_marca" class="control-label"></label>
+                <input asp-for="nombre_marca" class="form-control" />
+                <span asp-validation-for="nombre_marca" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="tipo_marca" class="control-label"></label>
+                <select asp-for="tipo_marca" class="form-control">
+                    <option value="">Seleccione un tipo</option>
+                    <option value="Cerveza">Cerveza</option>
+                    <option value="Bebida no alcohólica">Bebida no alcohólica</option>
+                </select>
+                <span asp-validation-for="tipo_marca" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="descripcion" class="control-label"></label>
+                <textarea asp-for="descripcion" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="descripcion" class="text-danger"></span>
+            </div>
+            
+            <!-- NUEVO: Mostrar imagen actual -->
+            <div class="form-group">
+                <label class="control-label">Imagen actual</label>
+                <div style="margin: 10px 0;">
+                    @if (!string.IsNullOrEmpty(Model.url_imagen))
+                    {
+                        <img src="@Model.url_imagen" alt="@Model.nombre_marca" style="max-width: 150px; max-height: 150px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" />
+                    }
+                    else
+                    {
+                        <p class="text-muted">No hay imagen disponible</p>
+                    }
+                </div>
+            </div>
+            
+            <!-- NUEVO: Campo para subir nueva imagen -->
+            <div class="form-group">
+                <label for="ImagenFile" class="control-label">Cambiar imagen</label>
+                <input type="file" name="ImagenFile" id="ImagenFile" class="form-control" accept="image/*" />
+                <small class="text-muted">Dejar vacío para mantener la imagen actual. Formatos: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
+                <span asp-validation-for="url_imagen" class="text-danger"></span>
+            </div>
+            
+            <!-- NUEVO: Vista previa de la nueva imagen -->
+            <div class="form-group">
+                <label class="control-label">Vista previa</label>
+                <div id="previewContainer" style="display:none; margin-top: 10px;">
+                    <img id="imagePreview" src="#" alt="Vista previa" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;" />
+                </div>
+            </div>
+            
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="es_activo" /> 
+                    @Html.DisplayNameFor(model => model.es_activo)
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        // Vista previa de imagen en tiempo real
+        document.getElementById('ImagenFile').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('previewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                previewContainer.style.display = 'none';
+                imagePreview.src = '#';
+            }
+        });
+    </script>
+}
